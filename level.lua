@@ -13,11 +13,14 @@ local Decal = require("objects.decal")
 
 function Level:init()
     self.entities = {}
-    for i, entity_name in ipairs(ENTITIY_NAMES) do
+    for _, entity_name in ipairs(ENTITIY_NAMES) do
         self.entities[entity_name] = require("objects."..entity_name)
     end
-    for i, tile_name in ipairs(TILE_NAMES) do
+    for _, tile_name in ipairs(TILE_NAMES) do
         NewImage(tile_name)
+    end
+    for _, decal_name in ipairs(DECAL_NAMES) do
+        NewImage(decal_name)
     end
 end
 
@@ -33,6 +36,9 @@ function Level:load_level(level_name)
                     Game:add(self.entities[entity.name], entity)
                 end
             elseif layer.decals then
+                for _, decal in ipairs(layer.decals) do
+                    Game:add(Decal, decal)
+                end
             end
         end
     else
