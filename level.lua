@@ -11,6 +11,18 @@ Level = {}
 local Tiles = require("objects.tiles")
 local Decal = require("objects.decal")
 
+function Level:refresh()
+    for _, entity_name in ipairs(ENTITIY_NAMES) do
+        for k, v in pairs(package.loaded) do
+            if k:sub(1, #"objects.") == "objects." then
+                package.loaded[k] = false
+            end
+        end
+        self.entities[entity_name] = require("objects."..entity_name)
+    end
+    Log("objects refreshed")
+end
+
 function Level:init()
     self.entities = {}
     for _, entity_name in ipairs(ENTITIY_NAMES) do
