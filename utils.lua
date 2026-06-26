@@ -80,44 +80,6 @@ function SetType(Object, type)
     end
 end
 
-Align = {}
-
-function Align.Bottom(self, dir, no_flip)
-    self.draw_x, self.draw_y = 0, 0
-    dir = dir or 0
-    if no_flip == nil and dir%2 == 1 then
-        self.w, self.h = self.h, self.w
-    end
-    if dir == 0 then
-        self.y = self.y+TILE_SIZE*math.ceil(self.h/TILE_SIZE)-self.h
-        self.x = self.x+TILE_SIZE/2-self.w/2
-    elseif dir == 1 then
-        self.draw_x = self.w
-        self.y = self.y+TILE_SIZE/2-self.h/2
-    elseif dir == 2 then
-        self.draw_y = self.h
-        self.draw_x = self.w
-        self.x = self.x+TILE_SIZE/2-self.w/2
-    elseif dir == 3 then
-        self.x = self.x+TILE_SIZE*math.ceil(self.w/TILE_SIZE)-self.w
-        self.draw_y = self.h
-        self.y = self.y+TILE_SIZE/2-self.h/2
-    end
-    return self
-end
-
-function Align.Center(self, _, _)
-    self.draw_x, self.draw_y = 0, 0
-    self.x = self.x+TILE_SIZE/2-self.w/2
-    self.y = self.y+TILE_SIZE/2-self.h/2
-    return self
-end
-
-function Align.None(self, _, _)
-    self.draw_x, self.draw_y = 0, 0
-    return self
-end
-
 function Copy(a, b)
     for k, v in pairs(a) do
         b[k] = v
