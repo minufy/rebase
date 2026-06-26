@@ -74,12 +74,6 @@ function RandomPitch()
     return math.random(8, 12)/10
 end
 
-function SetType(Object, type)
-    function Object:__tostring()
-        return type
-    end
-end
-
 function Copy(a, b)
     for k, v in pairs(a) do
         b[k] = v
