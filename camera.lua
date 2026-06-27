@@ -16,23 +16,7 @@ Camera.shake_y = 0
 Camera.shake_duration = 0
 
 Camera.on = false
-
-Camera.zoom = 1
-
 local shake_thresh = 0.1
-
-function Camera:scale_zoom(scale)
-    local mouse_x = Res:get_x()
-    local mouse_y = Res:get_y()
-    self.zoom = self.zoom*scale
-    self:add(mouse_x-Res:get_x(), mouse_y-Res:get_y())
-    self:snap_back()
-end
-
-function Camera:set_zoom(v)
-    self.zoom = v
-    self:snap_back()
-end
 
 function Camera:add(x, y)
     self.target_x = self.target_x+x
@@ -50,8 +34,8 @@ function Camera:offset(x, y)
 end
 
 function Camera:snap_back()
-    self.x = -self.offset_x+self.target_x
-    self.y = -self.offset_y+self.target_y
+    self.x = self.target_x-self.offset_x
+    self.y = self.target_y-self.offset_y
 end
 
 function Camera:shake(dur)
@@ -63,7 +47,6 @@ function Camera:start()
     if self.shake_duration > shake_thresh then
         love.graphics.translate(self.shake_x, self.shake_y)
     end
-    love.graphics.scale(self.zoom, self.zoom)
     love.graphics.translate(-self.x, -self.y)
     self.on = true
 end
@@ -80,8 +63,8 @@ function Camera:update(dt)
     end
     self.shake_duration = self.shake_duration+(0-self.shake_duration)*self.shake_damp*dt
     
-    self.x = self.x+(-self.offset_x+self.target_x-self.x)*self.x_damp*dt
-    self.y = self.y+(-self.offset_y+self.target_y-self.y)*self.y_damp*dt
+    self.x = self.x+(self.target_x-self.offset_x-self.x)*self.x_damp*dt
+    self.y = self.y+(self.target_y-self.offset_y-self.y)*self.y_damp*dt
 end
 
 function Camera:check_vis(x, y, w, h)
