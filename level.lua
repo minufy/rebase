@@ -19,6 +19,7 @@ function Level:refresh()
             end
         end
         ENTITIES[entity_name] = require("objects."..entity_name)
+        SetType(ENTITIES[entity_name], entity_name)
     end
     Log("objects refreshed")
 end
