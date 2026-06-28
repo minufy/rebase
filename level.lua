@@ -30,8 +30,16 @@ function Level:init()
         ENTITIES[entity_name] = require("objects."..entity_name)
         SetType(ENTITIES[entity_name], entity_name)
     end
+    TILE_QUADS = {}
     for _, tile_name in ipairs(TILE_NAMES) do
         NewImage(tile_name)
+        TILE_QUADS[tile_name] = {}
+        local w, h = Image[tile_name]:getDimensions()
+        for y = 0, h-TILE_SIZE, TILE_SIZE do
+            for x = 0, w-TILE_SIZE, TILE_SIZE do
+                table.insert(TILE_QUADS[tile_name], love.graphics.newQuad(x, y, TILE_SIZE, TILE_SIZE, Image[tile_name]))
+            end
+        end
     end
     for _, decal_name in ipairs(DECAL_NAMES) do
         NewImage(decal_name)
