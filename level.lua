@@ -12,21 +12,22 @@ local Tiles = require("objects.tiles")
 local Decal = require("objects.decal")
 
 function Level:refresh()
-    for _, entity_name in ipairs(ENTITIY_NAMES) do
+    for _, entity_name in ipairs(ENTITY_NAMES) do
         for k, v in pairs(package.loaded) do
             if k:sub(1, #"objects.") == "objects." then
                 package.loaded[k] = false
             end
         end
-        self.entities[entity_name] = require("objects."..entity_name)
+        ENTITIES[entity_name] = require("objects."..entity_name)
     end
     Log("objects refreshed")
 end
 
 function Level:init()
-    self.entities = {}
-    for _, entity_name in ipairs(ENTITIY_NAMES) do
-        self.entities[entity_name] = require("objects."..entity_name)
+    ENTITIES = {}
+    for _, entity_name in ipairs(ENTITY_NAMES) do
+        ENTITIES[entity_name] = require("objects."..entity_name)
+        SetType(ENTITIES[entity_name], entity_name)
     end
     for _, tile_name in ipairs(TILE_NAMES) do
         NewImage(tile_name)
@@ -45,7 +46,7 @@ function Level:load_level(level_name)
                 Game:add(Tiles, layer)
             elseif layer.entities then
                 for _, entity in ipairs(layer.entities) do
-                    Game:add(self.entities[entity.name], entity)
+                    Game:add(ENTITIES[entity.name], entity)
                 end
             elseif layer.decals then
                 for _, decal in ipairs(layer.decals) do
