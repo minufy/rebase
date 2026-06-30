@@ -8,6 +8,7 @@ function Source:new(name, volume, type, cb)
     type = type or "static"
     self.source = love.audio.newSource("assets/audio/"..name..".ogg", type)
     self.volume = volume
+    self.init_volume = volume
     self:update()
     if cb then
         cb(self.source)
