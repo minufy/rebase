@@ -51,10 +51,12 @@ function Physics.solve_y(self, y, col)
 end
 
 function Physics.col_tiles(self, cb, layers)
-    layers = layers or {1}
-    for i, layer in ipairs(layers) do
-        local tiles = Game.objects["tiles"][layer]
-        local around = tiles:around(math.round(self.x, TILE_SIZE), math.round(self.y, TILE_SIZE))
-        Physics.col_group(self, around, cb)
+    layers = layers or {"tiles"}
+    for _, layer in ipairs(layers) do
+        local tiles = Game.tiles[layer]
+        if tiles then
+            local around = tiles:around(math.round(self.x, TILE_SIZE), math.round(self.y, TILE_SIZE))
+            Physics.col_group(self, around, cb)
+        end
     end
 end

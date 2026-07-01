@@ -8,7 +8,6 @@ local json = require("modules.json")
 
 Level = {}
 
-local Tiles = require("objects.tiles")
 local Decal = require("objects.decal")
 
 function Level:refresh()
@@ -52,7 +51,7 @@ function Level:load_level(level_name)
         local level_data = json.decode(contents)
         for _, layer in ipairs(level_data.layers) do
             if layer.tileset then
-                Game:add(Tiles, layer)
+                Game:add_tiles(layer)
             elseif layer.entities then
                 for _, entity in ipairs(layer.entities) do
                     Game:add(ENTITIES[entity.name], entity)
