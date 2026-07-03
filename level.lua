@@ -48,19 +48,28 @@ end
 function Level:load_level(level_name)
     local contents, _ = love.filesystem.read("assets/levels/"..level_name..".json")
     if contents then
+        local inits = {}
         local level_data = json.decode(contents)
         for _, layer in ipairs(level_data.layers) do
             if layer.tileset then
                 Game:add_tiles(layer)
             elseif layer.entities then
                 for _, entity in ipairs(layer.entities) do
-                    Game:add(ENTITIES[entity.name], entity)
+                    local object = Game:add(ENTITIES[entity.name], entity)
+                    if object.init then
+                        table.insert(inits, function ()
+                            object:init()
+                        end)
+                    end
                 end
             elseif layer.decals then
                 for _, decal in ipairs(layer.decals) do
                     Game:add(Decal, decal)
                 end
             end
+        end
+        for _, init in ipairs(inits) do
+            init()
         end
     else
         Log("could not load "..level_name)
