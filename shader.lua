@@ -26,8 +26,9 @@ end
 
 Outline = {}
 
-function Outline:init(offset)
+function Outline:init(offset, color)
     self.offset = offset or 1
+    self.color = color or {0, 0, 0, 0}
     self.shader = love.graphics.newShader("assets/shader/outline.glsl")
     self.canvas = love.graphics.newCanvas(Res.w, Res.h)
     self.prev_canvas = nil
@@ -40,10 +41,10 @@ function Outline:start()
 end
 
 function Outline:stop()
-    love.graphics.setBlendMode("alpha", "premultiplied")
     love.graphics.setCanvas(self.prev_canvas)
     
     love.graphics.setShader(self.shader)
+    self.shader:sendColor("Color", self.color)
     for x = -self.offset, self.offset do
         for y = -self.offset, self.offset do
             if not (x == 0 and y == 0) then
@@ -54,6 +55,4 @@ function Outline:stop()
 
     love.graphics.setShader()
     love.graphics.draw(self.canvas)
-    
-    love.graphics.setBlendMode("alpha")
 end
