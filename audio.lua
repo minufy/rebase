@@ -1,42 +1,27 @@
 Audio = {}
 Audio.global_volume = 10
+Audio.volumes = {}
+Audio.init_volumes = {}
 Audio.sources = {}
 
-Source = Object:extend()
-
-function Source:new(name, volume, type, cb)
+function NewAudio(name, volume, type)
     type = type or "static"
-    self.source = love.audio.newSource("assets/audio/"..name..".ogg", type)
-    self.volume = volume
-    self.init_volume = volume
-    self:update()
-    if cb then
-        cb(self.source)
-    end
-end
-
-function Source:play(pitch)
-    pitch = pitch or 1
-    self:update()
-    self.source:setPitch(pitch)
-    self.source:stop()
-    self.source:play()
-end
-
-function Source:update()
-    self.source:setVolume(self.volume*Audio.global_volume/10)
-end
-
-function NewAudio(name, volume, type, cb)
-    local source = Source(name, volume, type, cb)
-    if type == "stream" then
-        table.insert(Audio.sources, source)
-    end
-    Audio[name] = source
+    local source = love.audio.newSource("assets/audio/"..name..".ogg", type)
+    Audio.volumes[name] = volume
+    Audio.init_volumes[name] = volume
+    Audio.sources[name] = source
     return source
 end
 
-function Audio:change_global_volume(x)
+function PlayAudio(name, pitch)
+    local source = Audio.sources[name]
+    pitch = pitch or 1
+    source:setPitch(pitch)
+    source:stop()
+    source:play()
+end
+
+function ChangeGlobalVolume(x)
     Audio.global_volume = Audio.global_volume+x
     if Audio.global_volume > 10 then
         Audio.global_volume = 10
@@ -45,12 +30,12 @@ function Audio:change_global_volume(x)
     end
 end
 
-function Audio:set_global_volume(x)
+function SetGlobalVolume(x)
     Audio.global_volume = x
 end
 
-function Audio:update()
-    for i, source in ipairs(self.sources) do
-        source:update()
+function UpdateAudio()
+    for name, source in pairs(Audio.sources) do
+        source:setVolume(Audio.volumes[name]*Audio.global_volume*0.1)
     end
 end
