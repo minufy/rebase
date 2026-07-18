@@ -21,6 +21,11 @@ function PlayAudio(name, pitch)
     source:play()
 end
 
+function StopAudio(name)
+    local source = Audio.sources[name]
+    source:stop()
+end
+
 function ChangeGlobalVolume(x)
     Audio.global_volume = Audio.global_volume+x
     if Audio.global_volume > 10 then
