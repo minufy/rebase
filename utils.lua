@@ -74,6 +74,10 @@ function RandomPitch()
     return math.random(8, 12)/10
 end
 
+function RandomRange(t)
+    return math.random(unpack(t))
+end
+
 function Copy(a, b)
     for k, v in pairs(a) do
         b[k] = v
