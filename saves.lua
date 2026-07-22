@@ -24,8 +24,6 @@ function Saves:set_value_and_save(filename, k, v)
         data[k] = v
         Saves:save_to_file(filename, data)
     else
-        Saves:save_to_file(filename, {
-            k = v
-        })
+        Saves:save_to_file(filename, {k = v})
     end
 end
