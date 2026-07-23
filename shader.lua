@@ -13,6 +13,7 @@ function Shadow:start()
 end
 
 function Shadow:stop()
+    love.graphics.setBlendMode("alpha", "premultiplied")
     love.graphics.setCanvas(Res.canvas)
     
     love.graphics.setShader(self.shader)
@@ -21,6 +22,7 @@ function Shadow:stop()
 
     love.graphics.setShader()
     love.graphics.draw(self.canvas)
+    love.graphics.setBlendMode("alpha")
 end
 
 Outline = {}
