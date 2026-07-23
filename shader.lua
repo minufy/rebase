@@ -1,8 +1,9 @@
 Shadow = {}
 
-function Shadow:init(offset)
+function Shadow:init(offset, color)
     self.shader = love.graphics.newShader("assets/shader/shadow.glsl")
     self.offset = offset or {x = 4, y = 4}
+    self.color = color or {0, 0, 0, 0.2}
     self.canvas = love.graphics.newCanvas(Res.w, Res.h)
 end
 
@@ -12,16 +13,14 @@ function Shadow:start()
 end
 
 function Shadow:stop()
-    love.graphics.setBlendMode("alpha", "premultiplied")
     love.graphics.setCanvas(Res.canvas)
     
     love.graphics.setShader(self.shader)
+    self.shader:sendColor("Color", self.color)
     love.graphics.draw(self.canvas, self.offset.x, self.offset.y)
 
     love.graphics.setShader()
     love.graphics.draw(self.canvas)
-    
-    love.graphics.setBlendMode("alpha")
 end
 
 Outline = {}
