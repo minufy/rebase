@@ -10,6 +10,7 @@ function NewAudio(name, volume, type)
     Audio.volumes[name] = volume
     Audio.init_volumes[name] = volume
     Audio.sources[name] = source
+    source:setVolume(volume*Audio.global_volume*0.1)
     return source
 end
 
