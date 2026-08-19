@@ -17,17 +17,22 @@ function Physics.col(self, group_names, cb)
     for _, group_name in ipairs(group_names) do
         local group = Game.objects[group_name]
         if group ~= nil then
-            Physics.col_group(self, group, cb)
+            return Physics.col_group(self, group, cb)
         end
     end
+    return false
 end
 
 function Physics.col_group(self, group, cb)
     for _, other in ipairs(group) do
         if self ~= other and AABB(self, other) then
+            if cb == nil then
+                return true
+            end
             cb(other)
         end
     end
+    return false
 end
 
 function Physics.solve_x(self, x, col)
