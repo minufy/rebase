@@ -44,7 +44,7 @@ function Camera:shake(x)
     self.shake_duration_y = x
 end
 
-function Camera:shake_axis(x, y)
+function Camera:shake_xy(x, y)
     self.shake_duration_x = x
     self.shake_duration_y = y
 end
