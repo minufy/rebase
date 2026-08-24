@@ -13,7 +13,8 @@ Camera.y_damp = nil
 Camera.shake_damp = nil
 Camera.shake_x = 0
 Camera.shake_y = 0
-Camera.shake_duration = 0
+Camera.shake_duration_x = 0
+Camera.shake_duration_y = 0
 
 Camera.on = false
 local shake_thresh = 0.1
@@ -38,13 +39,19 @@ function Camera:snap_back()
     self.y = self.target_y-self.offset_y
 end
 
-function Camera:shake(dur)
-    self.shake_duration = dur
+function Camera:shake(x)
+    self.shake_duration_x = x
+    self.shake_duration_y = x
+end
+
+function Camera:shake_axis(x, y)
+    self.shake_duration_x = x
+    self.shake_duration_y = y
 end
 
 function Camera:start()
     love.graphics.push()
-    if self.shake_duration > shake_thresh then
+    if self.shake_duration_x > shake_thresh or self.shake_duration_y > shake_thresh then
         love.graphics.translate(self.shake_x, self.shake_y)
     end
     love.graphics.translate(-self.x, -self.y)
@@ -57,11 +64,14 @@ function Camera:stop()
 end
 
 function Camera:update(dt)
-    if self.shake_duration > shake_thresh then
-        self.shake_x = math.random(-self.shake_duration, self.shake_duration)
-        self.shake_y = math.random(-self.shake_duration, self.shake_duration)
+    if self.shake_duration_x > shake_thresh then
+        self.shake_x = math.random(-self.shake_duration_x, self.shake_duration_x)
     end
-    self.shake_duration = self.shake_duration+(0-self.shake_duration)*self.shake_damp*dt
+    self.shake_duration_x = self.shake_duration_x+(0-self.shake_duration_x)*self.shake_damp*dt
+    if self.shake_duration_y > shake_thresh then
+        self.shake_y = math.random(-self.shake_duration_y, self.shake_duration_y)
+    end
+    self.shake_duration_y = self.shake_duration_y+(0-self.shake_duration_y)*self.shake_damp*dt
     
     self.x = self.x+(self.target_x-self.offset_x-self.x)*self.x_damp*dt
     self.y = self.y+(self.target_y-self.offset_y-self.y)*self.y_damp*dt
