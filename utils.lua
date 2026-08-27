@@ -43,6 +43,10 @@ function math.round(x, r, ofs)
     return math.floor(x/r+ofs)
 end
 
+function math.clamp(x, min, max)
+    return math.max(min, math.min(max, x))
+end
+
 function AABB(a, b)
     return a.x < b.x+b.w and
            b.x < a.x+a.w and
@@ -55,11 +59,13 @@ function SinEffect(t)
     return math.sin(love.timer.getTime()*t)
 end
 
-function EaseOut(x)
+Ease = {}
+
+function Ease.out(x)
     return 1-(1-x)^2
 end
 
-function EaseOutElastic(x)
+function Ease.out_elastic(x)
     local c4 = (2*math.pi)/3
     if x == 0 then
         return 0

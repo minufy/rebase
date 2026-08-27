@@ -1,6 +1,6 @@
 Input = {}
 
-function NewInput(keys)
+function Input.new(keys)
     return {
         keys = keys,
         pressed = false,
@@ -54,6 +54,6 @@ function Input:reset_wheel()
     Input.wheel.down = false
 end
 
-Input.mb = {NewInput({1}), NewInput({2}), NewInput({3})}
-Input.wheel = NewInput()
+Input.mb = {Input.new({1}), Input.new({2}), Input.new({3})}
+Input.wheel = Input.new()
 Input.wheel.up = false

@@ -31,7 +31,7 @@ function Level:init()
     end
     TILE_QUADS = {}
     for _, tile_name in ipairs(TILE_NAMES) do
-        NewImage(tile_name)
+        Image.new(tile_name)
         TILE_QUADS[tile_name] = {}
         local w, h = Image[tile_name]:getDimensions()
         for y = 0, h-TILE_SIZE, TILE_SIZE do
@@ -41,7 +41,7 @@ function Level:init()
         end
     end
     for _, decal_name in ipairs(DECAL_NAMES) do
-        NewImage(decal_name)
+        Image.new(decal_name)
     end
 end
 
