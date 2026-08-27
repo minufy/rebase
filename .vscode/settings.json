@@ -16,7 +16,7 @@
         "WINDOW_W",
         "WINDOW_H",
         "TILE_SIZE",
-        "ENTITIY_NAMES",
+        "ENTITY_NAMES",
         "TILE_NAMES",
         "DECAL_NAMES",
         "LogFont",
