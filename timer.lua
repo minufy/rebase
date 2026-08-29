@@ -1,8 +1,11 @@
-Timer = Object:extend()
+Timer = {}
+Timer.__index = Timer
 
-function Timer:new(time, timer)
+function Timer.new(time, timer)
+    local self = {}
     self.time = time
     self.timer = timer or 0
+    return setmetatable(self, Timer)
 end
 
 function Timer:run(dt)
