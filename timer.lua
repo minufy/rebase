@@ -2,10 +2,10 @@ Timer = {}
 Timer.__index = Timer
 
 function Timer.new(time, timer)
-    local self = {}
+    local self = setmetatable({}, Timer)
     self.time = time
     self.timer = timer or 0
-    return setmetatable(self, Timer)
+    return self
 end
 
 function Timer:run(dt)
