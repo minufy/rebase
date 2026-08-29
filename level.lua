@@ -9,9 +9,10 @@ local json = require("modules.json")
 Level = {}
 
 local Decal = require("objects.decal")
+local Tiles = require("objects.tiles")
 
 function Level:refresh()
-    for _, entity_name in ipairs(ENTITY_NAMES) do
+    for _, entity_name in ipairs(self.entity_names) do
         for k, v in pairs(package.loaded) do
             if k:sub(1, #"objects.") == "objects." then
                 package.loaded[k] = false
@@ -24,8 +25,18 @@ function Level:refresh()
 end
 
 function Level:init()
+    self.entity_names = {}
+    local files = love.filesystem.getDirectoryItems("objects")
+    for _, entity_name in ipairs(files) do
+        local info = love.filesystem.getInfo("objects/"..entity_name)
+        if info then
+            if info.type == "file" then
+                table.insert(self.entity_names, entity_name:sub(1, #entity_name-4))
+            end
+        end
+    end
     ENTITIES = {}
-    for _, entity_name in ipairs(ENTITY_NAMES) do
+    for _, entity_name in ipairs(self.entity_names) do
         ENTITIES[entity_name] = require("objects."..entity_name)
         SetType(ENTITIES[entity_name], entity_name)
     end
@@ -52,10 +63,11 @@ function Level:load_level(level_name)
         local level_data = json.decode(contents)
         for _, layer in ipairs(level_data.layers) do
             if layer.tileset then
-                Game:add_tiles(layer)
+                local tiles = Tiles.new(layer)
+                Game.tiles[layer.name] = tiles
             elseif layer.entities then
                 for _, entity in ipairs(layer.entities) do
-                    local object = Game:add(ENTITIES[entity.name], entity)
+                    local object = Game:add(ENTITIES[entity.name].new(entity))
                     if object.init then
                         table.insert(inits, function ()
                             object:init()
@@ -64,7 +76,7 @@ function Level:load_level(level_name)
                 end
             elseif layer.decals then
                 for _, decal in ipairs(layer.decals) do
-                    Game:add(Decal, decal)
+                    Game:add(Decal.new(decal))
                 end
             end
         end
