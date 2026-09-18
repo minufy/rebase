@@ -61,7 +61,10 @@ function Physics.col_tiles(self, cb, layers)
         local tiles = Game.tiles[layer]
         if tiles then
             local around = tiles:around(math.round(self.x, TILE_SIZE), math.round(self.y, TILE_SIZE))
-            Physics.col_group(self, around, cb)
+            if Physics.col_group(self, around, cb) then
+                return true
+            end
         end
     end
+    return false
 end
