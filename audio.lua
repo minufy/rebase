@@ -56,7 +56,7 @@ function Audio.set_channel_volume(x, channel)
 end
 
 function Audio.update_volumes()
-    for name, _ in pairs(Audio.sounds) do
-        updateVolume(name)
+    for name, sound in pairs(Audio.sounds) do
+        updateVolume(sound)
     end
 end
