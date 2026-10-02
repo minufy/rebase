@@ -19,6 +19,7 @@ function Res:init(settings, shader)
     self.canvas = love.graphics.newCanvas(self.w, self.h, settings)
     self.q = {}
     self.shader = shader
+    self.fullscreen = false
 end
 
 function Res:before()
@@ -68,4 +69,9 @@ function Res:resize(w, h)
         self.shift.x = w/2-Res.w*Res.zoom/2
         self.shift.y = 0
     end
+end
+
+function Res:toggle_fullscreen()
+    self.fullscreen = not self.fullscreen
+    love.window.setFullscreen(self.fullscreen)
 end
