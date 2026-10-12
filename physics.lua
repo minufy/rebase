@@ -17,7 +17,10 @@ function Physics.col(self, group_names, cb)
     for _, group_name in ipairs(group_names) do
         local group = Game.objects[group_name]
         if group ~= nil then
-            return Physics.col_group(self, group, cb)
+            local result = Physics.col_group(self, group, cb)
+            if result then
+                return result
+            end
         end
     end
     return false
