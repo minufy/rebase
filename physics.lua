@@ -26,7 +26,9 @@ end
 function Physics.col_group(self, group, cb)
     for _, other in ipairs(group) do
         if self ~= other and AABB(self, other) then
-            cb(other)
+            if cb then
+                cb(other)
+            end
             return true
         end
     end
