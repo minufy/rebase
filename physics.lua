@@ -1,34 +1,8 @@
 Physics = {}
 
-function Physics.dist(self, group_names, cb, radius)
-    for _, group_name in ipairs(group_names) do
-        local group = Game.objects[group_name]
-        if group ~= nil then
-            for _, other in ipairs(group) do
-                if self ~= other and math.dist(self, other) <= radius then
-                    cb(other)
-                end
-            end
-        end
-    end
-end
-
-function Physics.col(self, group_names, cb)
-    for _, group_name in ipairs(group_names) do
-        local group = Game.objects[group_name]
-        if group ~= nil then
-            local result = Physics.col_group(self, group, cb)
-            if result then
-                return result
-            end
-        end
-    end
-    return false
-end
-
-function Physics.col_group(self, group, cb)
+function Physics.dist(object, group, cb, radius)
     for _, other in ipairs(group) do
-        if self ~= other and AABB(self, other) then
+        if object ~= other and math.dist(object, other) <= radius then
             if cb then
                 cb(other)
             end
@@ -38,36 +12,34 @@ function Physics.col_group(self, group, cb)
     return false
 end
 
-function Physics.solve_x(self, x, col)
-    if col then
-        if x > 0 then
-            self.x = col.x-self.w
-        else
-            self.x = col.x+col.w
-        end
-    end
-end
-
-function Physics.solve_y(self, y, col)
-    if col then
-        if y > 0 then
-            self.y = col.y-self.h
-        else
-            self.y = col.y+col.h
-        end
-    end
-end
-
-function Physics.col_tiles(self, cb, layers)
-    layers = layers or {"tiles"}
-    for _, layer in ipairs(layers) do
-        local tiles = Game.tiles[layer]
-        if tiles then
-            local around = tiles:around(math.round(self.x, TILE_SIZE), math.round(self.y, TILE_SIZE))
-            if Physics.col_group(self, around, cb) then
-                return true
+function Physics.col(object, group, cb)
+    for _, other in ipairs(group) do
+        if object ~= other and AABB(object, other) then
+            if cb then
+                cb(other)
             end
+            return true
         end
     end
     return false
+end
+
+function Physics.solve_x(object, x, col)
+    if col then
+        if x > 0 then
+            object.x = col.x-object.w
+        else
+            object.x = col.x+col.w
+        end
+    end
+end
+
+function Physics.solve_y(object, y, col)
+    if col then
+        if y > 0 then
+            object.y = col.y-object.h
+        else
+            object.y = col.y+col.h
+        end
+    end
 end

@@ -57,27 +57,3 @@ function Outline:stop()
     love.graphics.setShader()
     love.graphics.draw(self.canvas)
 end
-
-Scanline = {}
-
-function Scanline:init(scanline_strength, glow_strength)
-    self.shader = love.graphics.newShader("assets/shader/scanline.glsl")
-    self.canvas = love.graphics.newCanvas(Res.w, Res.h)
-    self.prev_canvas = nil
-    self.shader:send("texture_size", {Res.w, Res.h})
-    self.shader:send("scanline_strength", scanline_strength or 0.1)
-    self.shader:send("glow_strength", glow_strength or 0.4)
-end
-
-function Scanline:start()
-    self.prev_canvas = love.graphics.getCanvas()
-    love.graphics.setCanvas(self.canvas)
-    love.graphics.clear()
-end
-
-function Scanline:stop()
-    love.graphics.setCanvas(self.prev_canvas)
-    love.graphics.setShader(self.shader)
-    love.graphics.draw(self.canvas, 0, 0)
-    love.graphics.setShader()
-end

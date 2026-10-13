@@ -45,6 +45,11 @@ function Audio.stop(name)
     source:stop()
 end
 
+function Audio.pause(name)
+    local source = Audio.sounds[name].source
+    source:pause()
+end
+
 function Audio.change_channel_volume(x, channel)
     Audio.channels[channel] = math.clamp(Audio.channels[channel]+x, 0, 10)
     Audio.update_volumes()
