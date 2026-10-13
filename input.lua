@@ -54,6 +54,14 @@ function Input:reset_wheel()
     Input.wheel.down = false
 end
 
+function Input:get_x()
+    return (love.mouse.getX()-Res.shift.x)/Res.zoom
+end
+
+function Input:get_y()
+    return (love.mouse.getY()-Res.shift.y)/Res.zoom
+end
+
 Input.mb = {Input.new({1}), Input.new({2}), Input.new({3})}
 Input.wheel = Input.new()
 Input.wheel.up = false
