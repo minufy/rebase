@@ -4,6 +4,7 @@ Log = {}
 Log.logs = {}
 Log.time = 240
 Log.prev = ""
+local font
 
 setmetatable(Log, {
     __call = function (self, ...)
@@ -22,11 +23,15 @@ setmetatable(Log, {
     end
 })
 
+function Log:init()
+    font = love.graphics.newFont(20)
+end
+
 function Log:draw()
-    love.graphics.setFont(LogFont)
+    love.graphics.setFont(font)
     for i, log in ipairs(self.logs) do
         love.graphics.setColor(1, 1, 1, 1-log.timer/Log.time)
-        love.graphics.print(log.text, 0, (#self.logs-i)*LogFont:getHeight())
+        love.graphics.print(log.text, 0, (#self.logs-i)*font:getHeight())
     end
     Color.reset()
 end
