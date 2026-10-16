@@ -5,10 +5,12 @@ function Shadow:init(offset, alpha)
     self.offset = offset or {x = 4, y = 4}
     self.canvas = love.graphics.newCanvas(Res.w, Res.h)
     self.prev_canvas = nil
+    self.prev_shader = nil
     self.shader:send("alpha", alpha or 0.2)
 end
 
 function Shadow:start()
+    self.prev_shader = love.graphics.getShader()
     self.prev_canvas = love.graphics.getCanvas()
     love.graphics.setCanvas(self.canvas)
     love.graphics.clear()
@@ -21,7 +23,7 @@ function Shadow:stop()
     love.graphics.setShader(self.shader)
     love.graphics.draw(self.canvas, self.offset.x, self.offset.y)
 
-    love.graphics.setShader()
+    love.graphics.setShader(self.prev_shader)
     love.graphics.draw(self.canvas)
     love.graphics.setBlendMode("alpha")
 end
@@ -37,6 +39,7 @@ function Outline:init(offset, color)
 end
 
 function Outline:start()
+    self.prev_shader = love.graphics.getShader()
     self.prev_canvas = love.graphics.getCanvas()
     love.graphics.setCanvas(self.canvas)
     love.graphics.clear()
@@ -54,6 +57,6 @@ function Outline:stop()
         end
     end
 
-    love.graphics.setShader()
+    love.graphics.setShader(self.prev_shader)
     love.graphics.draw(self.canvas)
 end
