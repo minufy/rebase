@@ -1,7 +1,7 @@
 Shadow = {}
 
 function Shadow:init(offset, alpha)
-    self.shader = love.graphics.newShader("assets/shader/shadow.glsl")
+    self.shader = love.graphics.newShader("assets/shaders/shadow.glsl")
     self.offset = offset or {x = 4, y = 4}
     self.canvas = love.graphics.newCanvas(Res.w, Res.h)
     self.prev_canvas = nil
@@ -30,7 +30,7 @@ Outline = {}
 
 function Outline:init(offset, color)
     self.offset = offset or 1
-    self.shader = love.graphics.newShader("assets/shader/outline.glsl")
+    self.shader = love.graphics.newShader("assets/shaders/outline.glsl")
     self.canvas = love.graphics.newCanvas(Res.w, Res.h)
     self.prev_canvas = nil
     self.shader:sendColor("Color", color or {0, 0, 0, 1})
