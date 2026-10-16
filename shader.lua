@@ -60,3 +60,23 @@ function Outline:stop()
     love.graphics.setShader(self.prev_shader)
     love.graphics.draw(self.canvas)
 end
+
+CleanEdge = {}
+
+function CleanEdge:init(line_width)
+    line_width = line_width or 1
+    self.shader = love.graphics.newShader("assets/shaders/cleanedge.glsl")
+    self.shader:send("highestColor", {1, 1, 1})
+    self.shader:send("similarThreshold", 0)
+    self.shader:send("lineWidth", line_width)
+end
+
+function CleanEdge:start(w, h)
+    self.shader:send("textureSize", {w, h})
+    self.prev_shader = love.graphics.getShader()
+    love.graphics.setShader(self.shader)
+end
+
+function CleanEdge:stop()
+    love.graphics.setShader(self.prev_shader)
+end
