@@ -63,12 +63,8 @@ end
 
 CleanEdge = {}
 
-function CleanEdge:init(line_width)
-    line_width = line_width or 1
+function CleanEdge:init()
     self.shader = love.graphics.newShader("assets/shaders/cleanedge.glsl")
-    self.shader:send("highestColor", {1, 1, 1})
-    self.shader:send("similarThreshold", 0)
-    self.shader:send("lineWidth", line_width)
 end
 
 function CleanEdge:start(w, h)
