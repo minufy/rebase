@@ -76,3 +76,19 @@ end
 function CleanEdge:stop()
     love.graphics.setShader(self.prev_shader)
 end
+
+Glitch = {}
+
+function Glitch:init()
+    self.shader = love.graphics.newShader("assets/shaders/glitch.glsl")
+end
+
+function Glitch:start(time_offset)
+    self.prev_shader = love.graphics.getShader()
+    self.shader:send("time", love.timer.getTime()+time_offset)
+    love.graphics.setShader(self.shader)
+end
+
+function Glitch:stop()
+    love.graphics.setShader(self.prev_shader)
+end
