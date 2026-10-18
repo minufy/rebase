@@ -1,6 +1,6 @@
-Shadow = {}
+local shadow = {}
 
-function Shadow:init(offset, alpha)
+function shadow:init(offset, alpha)
     self.shader = love.graphics.newShader("assets/shaders/shadow.glsl")
     self.offset = offset or {x = 4, y = 4}
     self.canvas = love.graphics.newCanvas(Res.w, Res.h)
@@ -9,14 +9,14 @@ function Shadow:init(offset, alpha)
     self.shader:send("alpha", alpha or 0.2)
 end
 
-function Shadow:start()
+function shadow:start()
     self.prev_shader = love.graphics.getShader()
     self.prev_canvas = love.graphics.getCanvas()
     love.graphics.setCanvas(self.canvas)
     love.graphics.clear()
 end
 
-function Shadow:stop()
+function shadow:stop()
     love.graphics.setBlendMode("alpha", "premultiplied")
     love.graphics.setCanvas(self.prev_canvas)
     
@@ -28,9 +28,9 @@ function Shadow:stop()
     love.graphics.setBlendMode("alpha")
 end
 
-Outline = {}
+local outline = {}
 
-function Outline:init(offset, color)
+function outline:init(offset, color)
     self.offset = offset or 1
     self.shader = love.graphics.newShader("assets/shaders/outline.glsl")
     self.canvas = love.graphics.newCanvas(Res.w, Res.h)
@@ -38,14 +38,14 @@ function Outline:init(offset, color)
     self.shader:sendColor("Color", color or {0, 0, 0, 1})
 end
 
-function Outline:start()
+function outline:start()
     self.prev_shader = love.graphics.getShader()
     self.prev_canvas = love.graphics.getCanvas()
     love.graphics.setCanvas(self.canvas)
     love.graphics.clear()
 end
 
-function Outline:stop()
+function outline:stop()
     love.graphics.setCanvas(self.prev_canvas)
     
     love.graphics.setShader(self.shader)
@@ -61,34 +61,40 @@ function Outline:stop()
     love.graphics.draw(self.canvas)
 end
 
-CleanEdge = {}
+local cleanedge = {}
 
-function CleanEdge:init()
+function cleanedge:init()
     self.shader = love.graphics.newShader("assets/shaders/cleanedge.glsl")
 end
 
-function CleanEdge:start(w, h)
+function cleanedge:start(w, h)
     self.shader:send("texSize", {w, h})
     self.prev_shader = love.graphics.getShader()
     love.graphics.setShader(self.shader)
 end
 
-function CleanEdge:stop()
+function cleanedge:stop()
     love.graphics.setShader(self.prev_shader)
 end
 
-Glitch = {}
+local glitch = {}
 
-function Glitch:init()
+function glitch:init()
     self.shader = love.graphics.newShader("assets/shaders/glitch.glsl")
 end
 
-function Glitch:start(time_offset)
+function glitch:start(time_offset)
     self.prev_shader = love.graphics.getShader()
     self.shader:send("time", love.timer.getTime()+time_offset)
     love.graphics.setShader(self.shader)
 end
 
-function Glitch:stop()
+function glitch:stop()
     love.graphics.setShader(self.prev_shader)
 end
+
+Shaders = {}
+Shaders.outline = outline
+Shaders.shadow = shadow
+Shaders.cleanedge = cleanedge
+Shaders.glitch = glitch
