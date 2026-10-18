@@ -68,7 +68,7 @@ function CleanEdge:init()
 end
 
 function CleanEdge:start(w, h)
-    self.shader:send("textureSize", {w, h})
+    self.shader:send("texSize", {w, h})
     self.prev_shader = love.graphics.getShader()
     love.graphics.setShader(self.shader)
 end
