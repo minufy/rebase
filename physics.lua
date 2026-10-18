@@ -1,27 +1,29 @@
 Physics = {}
 
 function Physics.dist(object, group, cb, radius)
+    local ret = false
     for _, other in ipairs(group) do
         if object ~= other and math.dist(object, other) <= radius then
             if cb then
                 cb(other)
             end
-            return true
+            ret = true
         end
     end
-    return false
+    return ret
 end
 
 function Physics.col(object, group, cb)
+    local ret = false
     for _, other in ipairs(group) do
         if object ~= other and AABB(object, other) then
             if cb then
                 cb(other)
             end
-            return true
+            ret = true
         end
     end
-    return false
+    return ret
 end
 
 function Physics.solve_x(object, x, col)
