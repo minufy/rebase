@@ -5,7 +5,7 @@ function Physics.dist(object, group, cb, radius)
     for _, other in ipairs(group) do
         if object ~= other and math.dist(object, other) <= radius then
             if cb then
-                cb(other)
+                cb(object, other)
             end
             ret = true
         end
@@ -18,7 +18,7 @@ function Physics.col(object, group, cb)
     for _, other in ipairs(group) do
         if object ~= other and AABB(object, other) then
             if cb then
-                cb(other)
+                cb(object, other)
             end
             ret = true
         end
