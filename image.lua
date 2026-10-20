@@ -1,3 +1,7 @@
+---@class Image
+---@field [string] love.Image
+
+---@type Image
 Image = {}
 Image.images = {}
 
