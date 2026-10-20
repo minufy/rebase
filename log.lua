@@ -1,46 +1,88 @@
-local MAX_LOGS = 100
+local max_logs = 100
+local anim_damp = 0.3
 
 Log = {}
 Log.logs = {}
 Log.time = 240
-Log.prev = ""
+Log.anim = 0
+Log.col = {x = 0, y = 0, w = 250, h = 200}
+Log.w = 0
+Log.h = 0
+Log.smooth_w = 0
+Log.smooth_h = 0
+Log.scroll = 0
+Log.smooth_scroll = 0
 local font
+local font_small
+local mouse_col = {x = 0, y = 0, w = 0, h = 0}
 
 setmetatable(Log, {
-    __call = function (self, ...)
-        local text = os.date().." : "
-        for i, t in ipairs({...}) do
-            text = text..tostring(t).." "
-        end
-        if #self.logs >= MAX_LOGS then
-            table.remove(self.logs, 1)
-        end
-        if text ~= Log.prev then
-            table.insert(self.logs, {text = text, timer = 0})
-            print(text)
-            Log.prev = text
-        end
+    __call = function (_, ...)
+        Log:log(...)
     end
 })
 
+function Log:log(...)
+    local text = ""
+    for _, t in ipairs({...}) do
+        text = text..tostring(t).." "
+    end
+    if #self.logs >= max_logs then
+        table.remove(self.logs, 1)
+    end
+    local prev_log = self.logs[#self.logs]
+    if prev_log and text == prev_log.text then
+        prev_log.duplicates = prev_log.duplicates+1
+    else
+        table.insert(self.logs, {date = os.date("%H:%M:%S"), text = text, duplicates = 0})
+        self.anim = 1
+    end
+end
+
 function Log:init()
     font = love.graphics.newFont(20)
+    font_small = love.graphics.newFont(15)
 end
 
 function Log:draw()
-    love.graphics.setFont(font)
-    for i, log in ipairs(self.logs) do
-        love.graphics.setColor(1, 1, 1, 1-log.timer/Log.time)
-        love.graphics.print(log.text, 0, (#self.logs-i)*font:getHeight())
+    if CONSOLE then
+        love.graphics.setColor(1, 1, 1, 0.2)
+        love.graphics.rectangle("fill", 0, 0, self.smooth_w, self.smooth_h)
+        love.graphics.setScissor(0, 0, self.smooth_w, self.smooth_h)
+        Color.reset()
+        for i, log in ipairs(self.logs) do
+            local y = (#self.logs-i-self.anim+self.smooth_scroll)*font:getHeight()
+            -- love.graphics.setColor(1, 1, 1, 1-log.timer/self.time)
+            love.graphics.setFont(font_small)
+            local date_text = log.date..": "
+            love.graphics.print(date_text, 0, y)
+            love.graphics.setFont(font)
+            love.graphics.print(log.text.." ("..log.duplicates..")", font_small:getWidth(date_text), y)
+        end
+        love.graphics.setScissor()
     end
-    Color.reset()
 end
 
 function Log:update(dt)
-    for i = #self.logs, 1, -1 do
-        self.logs[i].timer = self.logs[i].timer+dt
-        if self.logs[i].timer > Log.time then
-            table.remove(self.logs, i)
+    if CONSOLE then
+        self.anim = self.anim-self.anim*anim_damp*dt
+        mouse_col.x = love.mouse.getX()
+        mouse_col.y = love.mouse.getY()
+        if AABB(self.col, mouse_col) then
+            self.w = self.col.w*2
+            self.h = self.col.h*2
+            if Input.wheel.up then
+                self.scroll = self.scroll+4
+            elseif Input.wheel.down then
+                self.scroll = self.scroll-4
+            end
+        else
+            self.w = self.col.w
+            self.h = self.col.h
+            self.scroll = 0
         end
+        self.smooth_w = self.smooth_w+(self.w-self.smooth_w)*anim_damp*dt
+        self.smooth_h = self.smooth_h+(self.h-self.smooth_h)*anim_damp*dt
+        self.smooth_scroll = self.smooth_scroll+(self.scroll-self.smooth_scroll)*anim_damp*dt
     end
 end
