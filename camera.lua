@@ -80,7 +80,7 @@ function Camera:update(dt)
         self.shake_y = math.random(-self.shake_duration_y, self.shake_duration_y)
     end
     self.shake_duration_y = self.shake_duration_y+(0-self.shake_duration_y)*self.shake_damp*dt
-    
+
     self.x = self.x+(self.target_x-self.offset_x-self.x)*self.x_damp*dt
     self.y = self.y+(self.target_y-self.offset_y-self.y)*self.y_damp*dt
 end

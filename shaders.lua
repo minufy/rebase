@@ -19,7 +19,7 @@ end
 function shadow:stop()
     love.graphics.setBlendMode("alpha", "premultiplied")
     love.graphics.setCanvas(self.prev_canvas)
-    
+
     love.graphics.setShader(self.shader)
     love.graphics.draw(self.canvas, self.offset.x, self.offset.y)
 
@@ -47,7 +47,7 @@ end
 
 function outline:stop()
     love.graphics.setCanvas(self.prev_canvas)
-    
+
     love.graphics.setShader(self.shader)
     for x = -self.offset, self.offset do
         for y = -self.offset, self.offset do
