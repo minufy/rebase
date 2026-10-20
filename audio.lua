@@ -32,27 +32,44 @@ function Audio.new(name, volume, options)
     Audio.sounds[name] = sound
 end
 
+function Audio.exists(name)
+	if Audio.sounds[name] == nil then
+		Log("audio '"..name.."' does not exist.")
+		return false
+	else
+    	return true
+	end
+end
+
 function Audio.play(name, pitch)
-    local source = Audio.sounds[name].source
-    pitch = pitch or 1
-    source:setPitch(pitch)
-    source:stop()
-    source:play()
+    if Audio.exists(name) then
+        local source = Audio.sounds[name].source
+        pitch = pitch or 1
+        source:setPitch(pitch)
+        source:stop()
+        source:play()
+    end
 end
 
 function Audio.stop(name)
-    local source = Audio.sounds[name].source
-    source:stop()
+    if Audio.exists(name) then
+        local source = Audio.sounds[name].source
+        source:stop()
+    end
 end
 
 function Audio.pause(name)
-    local source = Audio.sounds[name].source
-    source:pause()
+    if Audio.exists(name) then
+        local source = Audio.sounds[name].source
+        source:pause()
+    end
 end
 
 function Audio.resume(name)
-    local source = Audio.sounds[name].source
-    source:play()
+    if Audio.exists(name) then
+        local source = Audio.sounds[name].source
+        source:play()
+    end
 end
 
 function Audio.change_channel_volume(x, channel)
@@ -66,7 +83,7 @@ function Audio.set_channel_volume(x, channel)
 end
 
 function Audio.update_volumes()
-    for name, sound in pairs(Audio.sounds) do
+    for _, sound in pairs(Audio.sounds) do
         updateVolume(sound)
     end
 end
