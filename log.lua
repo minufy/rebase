@@ -8,9 +8,10 @@ Log.anim = 0
 Log.col = {x = 0, y = 0, w = 250, h = 200}
 Log.w = 0
 Log.h = 0
+Log.scroll = 0
+Log.alpha = 0
 Log.smooth_w = 0
 Log.smooth_h = 0
-Log.scroll = 0
 Log.smooth_scroll = 0
 local font
 local font_small
@@ -46,7 +47,7 @@ end
 
 function Log:draw()
     if CONSOLE then
-        love.graphics.setColor(1, 1, 1, 0.2)
+        love.graphics.setColor(1, 1, 1, 0.2+self.alpha)
         love.graphics.rectangle("fill", 0, 0, self.smooth_w, self.smooth_h)
         love.graphics.setScissor(0, 0, self.smooth_w, self.smooth_h)
         Color.reset()
@@ -76,6 +77,10 @@ function Log:update(dt)
             elseif Input.wheel.down then
                 self.scroll = self.scroll-4
             end
+            if Input.mb[1].pressed then
+                self.alpha = 0.2
+                self.logs = {}
+            end
         else
             self.w = self.col.w
             self.h = self.col.h
@@ -84,5 +89,6 @@ function Log:update(dt)
         self.smooth_w = self.smooth_w+(self.w-self.smooth_w)*anim_damp*dt
         self.smooth_h = self.smooth_h+(self.h-self.smooth_h)*anim_damp*dt
         self.smooth_scroll = self.smooth_scroll+(self.scroll-self.smooth_scroll)*anim_damp*dt
+        self.alpha = self.alpha-self.alpha*anim_damp*dt
     end
 end
