@@ -60,7 +60,7 @@ end
 function Camera:start()
     love.graphics.push()
     if self.shake_duration_x > shake_thresh or self.shake_duration_y > shake_thresh then
-        love.graphics.translate(self.shake_x, self.shake_y)
+        love.graphics.translate(math.round(self.shake_x), math.round(self.shake_y))
     end
     love.graphics.translate(math.round(-self.x), math.round(-self.y))
     self.on = true
