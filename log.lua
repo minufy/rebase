@@ -1,17 +1,19 @@
 local max_logs = 100
 local anim_damp = 0.3
+local w = 250
+local h = 200
 
 Log = {}
 Log.logs = {}
 Log.time = 240
 Log.anim = 0
-Log.col = {x = 0, y = 0, w = 250, h = 200}
-Log.w = 0
-Log.h = 0
+-- Log.col = {x = 0, y = 0, w = 250, h = 200}
+Log.w = w
+Log.h = h
 Log.scroll = 0
 Log.alpha = 0
-Log.smooth_w = 0
-Log.smooth_h = 0
+Log.smooth_w = w
+Log.smooth_h = h
 Log.smooth_scroll = 0
 local font
 local font_small
@@ -67,24 +69,28 @@ end
 function Log:update(dt)
     if CONSOLE then
         self.anim = self.anim-self.anim*anim_damp*dt
+        local prev_mouse_x = mouse_col.x
+        local prev_mouse_y = mouse_col.y
         mouse_col.x = love.mouse.getX()
         mouse_col.y = love.mouse.getY()
-        if AABB(self.col, mouse_col) then
-            self.w = self.col.w*2
-            self.h = self.col.h*2
+        if Input.mb[1].down then
+            -- self.w = math.max(0, self.w+mouse_col.x-prev_mouse_x)
+            -- self.h = math.max(0, self.h+mouse_col.y-prev_mouse_y)
             if Input.wheel.up then
                 self.scroll = self.scroll+4
             elseif Input.wheel.down then
                 self.scroll = self.scroll-4
             end
-            if Input.mb[1].pressed then
-                self.alpha = 0.2
-                self.logs = {}
-            end
         else
-            self.w = self.col.w
-            self.h = self.col.h
             self.scroll = 0
+        end
+        Log(self.w)
+        if Input.mb[1].released then
+            if AABB(self, mouse_col) then
+                -- self.w = self.w
+                -- self.h = self.h
+                self.alpha = 0.2
+            end
         end
         self.smooth_w = self.smooth_w+(self.w-self.smooth_w)*anim_damp*dt
         self.smooth_h = self.smooth_h+(self.h-self.smooth_h)*anim_damp*dt
