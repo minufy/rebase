@@ -1,5 +1,10 @@
 Physics = {}
 
+---@param object table
+---@param group table[string]
+---@param cb function
+---@param radius number
+---@return boolean
 function Physics.dist(object, group, cb, radius)
     local ret = false
     for _, other in ipairs(group) do
@@ -13,6 +18,10 @@ function Physics.dist(object, group, cb, radius)
     return ret
 end
 
+---@param object table
+---@param group table[string]
+---@param cb function
+---@return boolean
 function Physics.col(object, group, cb)
     local ret = false
     for _, other in ipairs(group) do
@@ -26,6 +35,9 @@ function Physics.col(object, group, cb)
     return ret
 end
 
+---@param object table
+---@param x number
+---@param col table
 function Physics.solve_x(object, x, col)
     if col then
         if x > 0 then
@@ -36,6 +48,9 @@ function Physics.solve_x(object, x, col)
     end
 end
 
+---@param object table
+---@param y number
+---@param col table
 function Physics.solve_y(object, y, col)
     if col then
         if y > 0 then

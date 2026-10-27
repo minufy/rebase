@@ -15,15 +15,17 @@ setmetatable(Image, {
     end
 })
 
+---@param name string
+---@param key? string
+---@return love.Image
 function Image.new(name, key)
     key = key or name
     local path = "assets/imgs/"..name..".png"
-    if love.filesystem.getInfo(path) then
+    if FileExists(path) then
         local img = love.graphics.newImage(path)
         Image.images[key] = img
         return img
     else
-        Log("Image not found: "..path)
         return error
     end
 end

@@ -1,5 +1,14 @@
+---@class Action
+---@field keys table[string]
+---@field pressed boolean
+---@field released boolean
+---@field down boolean
+---@field up boolean
+
 Input = {}
 
+---@param keys? table[string]
+---@return Action
 function Input.new(keys)
     return {
         keys = keys,
@@ -44,7 +53,7 @@ function Input:update()
     end
 end
 
-function Input:wheelmoved(dx, dy)
+function Input:wheelmoved(_, dy)
     Input.wheel.up = dy > 0
     Input.wheel.down = dy < 0
 end

@@ -97,3 +97,11 @@ function ToDict(t)
     end
     return d
 end
+
+function FileExists(path)
+    local info = love.filesystem.getInfo(path)
+    if info == nil then
+        Log(path.." does not exist")
+    end
+    return info
+end

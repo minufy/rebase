@@ -25,11 +25,9 @@ function Level:init()
     self.entity_names = {}
     local files = love.filesystem.getDirectoryItems("objects")
     for _, entity_name in ipairs(files) do
-        local info = love.filesystem.getInfo("objects/"..entity_name)
-        if info then
-            if info.type == "file" then
-                table.insert(self.entity_names, entity_name:sub(1, #entity_name-4))
-            end
+        local info = FileExists("objects/"..entity_name)
+        if info and info.type == "file" then
+            table.insert(self.entity_names, entity_name:sub(1, #entity_name-4))
         end
     end
     ENTITIES = {}

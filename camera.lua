@@ -47,6 +47,7 @@ function Camera:snap_back_y()
     self.y = self.target_y-self.offset_y
 end
 
+---@param x number
 function Camera:shake(x)
     self.shake_duration_x = x
     self.shake_duration_y = x

@@ -1,6 +1,11 @@
 Animation = {}
 Animation.animations = {}
 
+---@param name string
+---@param s integer
+---@param e integer
+---@param delay number
+---@return table[string]
 function Animation.new(name, s, e, delay)
     Animation.animations[name] = {
         delay = delay,
@@ -30,6 +35,8 @@ function Animation.update(name, dt)
     end
 end
 
+---@param name string
+---@return love.Image
 function Animation.get_frame(name)
     local anim = Animation.animations[name]
     return Image[name..anim.index]
