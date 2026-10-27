@@ -7,7 +7,6 @@ Log = {}
 Log.logs = {}
 Log.time = 240
 Log.anim = 0
--- Log.col = {x = 0, y = 0, w = 250, h = 200}
 Log.x = 0
 Log.y = 0
 Log.w = w
@@ -59,7 +58,6 @@ function Log:draw()
         Color.reset()
         for i, log in ipairs(self.logs) do
             local y = (#self.logs-i-self.anim+self.smooth_scroll)*font:getHeight()
-            -- love.graphics.setColor(1, 1, 1, 1-log.timer/self.time)
             love.graphics.setFont(font_small)
             local date_text = log.date..": "
             love.graphics.print(date_text, 0, y)
