@@ -8,6 +8,8 @@ Log.logs = {}
 Log.time = 240
 Log.anim = 0
 -- Log.col = {x = 0, y = 0, w = 250, h = 200}
+Log.x = 0
+Log.y = 0
 Log.w = w
 Log.h = h
 Log.scroll = 0
@@ -76,8 +78,8 @@ function Log:update(dt)
         mouse_col.x = love.mouse.getX()
         mouse_col.y = love.mouse.getY()
         if Input.mb[1].down then
-            -- self.w = math.max(0, self.w+mouse_col.x-prev_mouse_x)
-            -- self.h = math.max(0, self.h+mouse_col.y-prev_mouse_y)
+            self.w = math.max(0, self.w+mouse_col.x-prev_mouse_x)
+            self.h = math.max(0, self.h+mouse_col.y-prev_mouse_y)
             if Input.wheel.up then
                 self.scroll = self.scroll+4
             elseif Input.wheel.down then
@@ -86,11 +88,10 @@ function Log:update(dt)
         else
             self.scroll = 0
         end
-        Log(self.w)
-        if Input.mb[1].released then
+        if Input.mb[2].released then
             if AABB(self, mouse_col) then
-                -- self.w = self.w
-                -- self.h = self.h
+                self.w = w
+                self.h = h
                 self.alpha = 0.2
             end
         end
