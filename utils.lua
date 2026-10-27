@@ -74,8 +74,9 @@ end
 
 Ease = {}
 
-function Ease.out(x)
-    return 1-(1-x)^2
+function Ease.out(x, p)
+    p = p or 2
+    return 1-(1-x)^p
 end
 
 function Ease.out_elastic(x)
