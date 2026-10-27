@@ -8,8 +8,21 @@ end
 
 Color = {}
 
+local function hex(x)
+    return tonumber("0x"..x)
+end
+
+function Color.hex(x)
+    x = x:gsub("#", "")
+    return {hex(x:sub(1, 2))/255, hex(x:sub(3, 4))/255, hex(x:sub(5, 6))/255}
+end
+
 function Color.alpha(rgb, a)
     return {rgb[1], rgb[2], rgb[3], a}
+end
+
+function Color.hex_alpha(x, a)
+    return Color.alpha(Color.hex(x), a)
 end
 
 function Color.reset()
