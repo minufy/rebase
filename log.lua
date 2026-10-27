@@ -37,7 +37,9 @@ function Log:log(...)
     if prev_log and text == prev_log.text then
         prev_log.duplicates = prev_log.duplicates+1
     else
-        table.insert(self.logs, {date = os.date("%H:%M:%S"), text = text, duplicates = 0})
+        local date = os.date("%H:%M:%S")
+        table.insert(self.logs, {date = date, text = text, duplicates = 0})
+        print(date..": "..text)
         self.anim = 1
     end
 end
