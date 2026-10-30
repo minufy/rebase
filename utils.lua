@@ -65,7 +65,7 @@ function SinEffect(t)
 end
 
 function Damp(dt, damp)
-    return 1-math.exp(-damp * dt)
+    return 1-math.exp(-damp*dt)
 end
 
 Ease = {}
