@@ -4,18 +4,6 @@ local w = 250
 local h = 200
 
 Log = {}
-Log.logs = {}
-Log.time = 240
-Log.anim = 0
-Log.x = 0
-Log.y = 0
-Log.w = w
-Log.h = h
-Log.scroll = 0
-Log.alpha = 0
-Log.smooth_w = w
-Log.smooth_h = h
-Log.smooth_scroll = 0
 local font
 local font_small
 local mouse_col = {x = 0, y = 0, w = 0, h = 0}
@@ -25,6 +13,25 @@ setmetatable(Log, {
         Log:log(...)
     end
 })
+
+function Log:init()
+    self.logs = {}
+    self.time = 240
+    self.anim = 0
+    self.x = 0
+    self.y = 0
+    self.w = w
+    self.h = h
+    self.scroll = 0
+    self.alpha = 0
+    Smooth(self, {
+        w = anim_damp,
+        h = anim_damp,
+        scroll = anim_damp,
+    })
+    font = love.graphics.newFont(20)
+    font_small = love.graphics.newFont(15)
+end
 
 function Log:log(...)
     local text = ""
@@ -43,11 +50,6 @@ function Log:log(...)
         print(date..": "..text)
         self.anim = 1
     end
-end
-
-function Log:init()
-    font = love.graphics.newFont(20)
-    font_small = love.graphics.newFont(15)
 end
 
 function Log:draw()
@@ -70,7 +72,8 @@ end
 
 function Log:update(dt)
     if CONSOLE then
-        self.anim = self.anim-self.anim*anim_damp*dt
+        self:update_smooth(dt)
+        self.anim = self.anim-self.anim*Damp(dt, anim_damp)
         local prev_mouse_x = mouse_col.x
         local prev_mouse_y = mouse_col.y
         mouse_col.x = love.mouse.getX()
@@ -93,9 +96,6 @@ function Log:update(dt)
                 self.alpha = 0.2
             end
         end
-        self.smooth_w = self.smooth_w+(self.w-self.smooth_w)*anim_damp*dt
-        self.smooth_h = self.smooth_h+(self.h-self.smooth_h)*anim_damp*dt
-        self.smooth_scroll = self.smooth_scroll+(self.scroll-self.smooth_scroll)*anim_damp*dt
-        self.alpha = self.alpha-self.alpha*anim_damp*dt
+        self.alpha = self.alpha-self.alpha*Damp(dt, anim_damp)
     end
 end

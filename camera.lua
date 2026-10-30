@@ -76,14 +76,14 @@ function Camera:update(dt)
     if self.shake_duration_x > shake_thresh then
         self.shake_x = math.random(-self.shake_duration_x, self.shake_duration_x)
     end
-    self.shake_duration_x = self.shake_duration_x+(0-self.shake_duration_x)*self.shake_damp*dt
+    self.shake_duration_x = self.shake_duration_x+(0-self.shake_duration_x)*Damp(dt, self.shake_damp)
     if self.shake_duration_y > shake_thresh then
         self.shake_y = math.random(-self.shake_duration_y, self.shake_duration_y)
     end
-    self.shake_duration_y = self.shake_duration_y+(0-self.shake_duration_y)*self.shake_damp*dt
+    self.shake_duration_y = self.shake_duration_y+(0-self.shake_duration_y)*Damp(dt, self.shake_damp)
 
-    self.x = self.x+(self.target_x-self.offset_x-self.x)*self.x_damp*dt
-    self.y = self.y+(self.target_y-self.offset_y-self.y)*self.y_damp*dt
+    self.x = self.x+(self.target_x-self.offset_x-self.x)*Damp(dt, self.x_damp)
+    self.y = self.y+(self.target_y-self.offset_y-self.y)*Damp(dt, self.y_damp)
 end
 
 function Camera:check_vis(x, y, w, h)
