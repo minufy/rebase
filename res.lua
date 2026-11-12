@@ -52,15 +52,9 @@ function Res:after()
 end
 
 function Res:resize(w, h)
-    if self.w-w > self.h-h then
-        self.zoom = w/self.w
-        self.shift.x = 0
-        self.shift.y = h/2-Res.h*Res.zoom/2
-    else
-        self.zoom = h/self.h
-        self.shift.x = w/2-Res.w*Res.zoom/2
-        self.shift.y = 0
-    end
+    self.zoom = math.min(w/self.w, h/self.h)
+    self.shift.x = (w-self.w*self.zoom)/2
+    self.shift.y = (h-self.h*self.zoom)/2
 end
 
 function Res:toggle_fullscreen()
